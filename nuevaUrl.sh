@@ -1,5 +1,6 @@
 #!/bin/bash 
 CODEDIR=`dirname $0`
+. ${CODEDIR}/funciones.sh
 FILES=${CODEDIR}/archivos 
 if [ -z "${1}" ] ; then
   echo "Falta el parámetro con la url a reenviar"
@@ -7,9 +8,13 @@ if [ -z "${1}" ] ; then
 fi
 
 while : ; do
-  ARCHIVO=${FILES}/$RANDOM 
+  CADENA=$(generaCadena "${FILES}" "${CODEDIR}/alfabeto")
+  ARCHIVO=$(string2File "${FILES}" ${CADENA})
   [[ -f ${ARCHIVO} ]] || break
 done
-
+DIRECTORIO=`dirname $ARCHIVO`
+if [ ! -d ${DIRECTORIO} ] ; then
+  mkdir -p -- ${DIRECTORIO}
+fi
 echo $1 >> $ARCHIVO
-echo `cat ${CODEDIR}/urlbase``basename $ARCHIVO`
+echo `cat ${CODEDIR}/urlbase`${CADENA}

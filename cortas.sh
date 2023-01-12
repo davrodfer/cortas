@@ -1,8 +1,9 @@
 #!/bin/bash 
-
-FILES=`dirname $0`/archivos
-ARCHIVO=`echo ${SCRIPT_NAME} | tr -d '/-'`
-URLFILE="${FILES}/${ARCHIVO}"
+CODEDIR=`dirname $0`
+FILES=${CODEDIR}/archivos
+. ${CODEDIR}/funciones.sh
+CADENA=`echo ${SCRIPT_NAME} | tr -d '/-'`
+URLFILE=$(string2File "${FILES}" ${CADENA})
 if [ -f ${URLFILE} ] ; then
   printf "Status: 301 Moved Permanently\r\n"
   printf "cache-control: private, max-age=2592000\r\n"
