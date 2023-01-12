@@ -27,10 +27,18 @@ Añadir configuracion a nginx
   }
 ```
 
-Añadir urlbase al contenido
+Añadir urlbase
 
 ```
 cd /opt/cortas
 echo "https://www.example.com/-" > urlbase
+```
+
+## Añadir url a la BBDD
+
+```
+$ /opt/cortas/nuevaUrl.sh https://github.com/davrodfer/cortas
+https://www.example.com/-9212
+$
 ```
 
