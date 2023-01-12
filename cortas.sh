@@ -1,9 +1,8 @@
 #!/bin/bash 
-CODEDIR=`dirname $0`
-FILES=${CODEDIR}/archivos
+. `dirname $0`/cortas.config
 . ${CODEDIR}/funciones.sh
 CADENA=`echo ${SCRIPT_NAME} | tr -d '/-'`
-URLFILE=$(string2File "${FILES}" ${CADENA})
+URLFILE=$(string2File "${BBDD}" ${CADENA})
 if [ -f ${URLFILE} ] ; then
   printf "Status: 301 Moved Permanently\r\n"
   printf "cache-control: private, max-age=2592000\r\n"

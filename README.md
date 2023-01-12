@@ -29,11 +29,11 @@ Añadir configuracion a nginx
   }
 ```
 
-Añadir urlbase
+Crear fichero de configuración y editarlo para personalizar.
 
 ```
 cd /opt/cortas
-echo "https://www.example.com/-" > urlbase
+cp cortas.config.sample cortas.config
 ```
 
 ## Añadir url a la BBDD

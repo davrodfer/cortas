@@ -1,0 +1,4 @@
+CODEDIR=`dirname $0`
+BBDD=/var/tmp/cortas_bbdd
+ALFABETO=${CODEDIR}/alfabeto
+URLBASE="https://www.example.es/-"

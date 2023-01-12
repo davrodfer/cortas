@@ -3,6 +3,14 @@
 function string2File {
   Directorio=$1
   Cadena=$2
+  if [ -z "${1}" ] ; then
+    echo "Falta el parámetro 1 con el directorio donde se crean los archivos"
+    exit 1
+  fi
+  if [ -z "${2}" ] ; then
+    echo "Falta el parámetro 2 con la cadena a convertir en archivo"
+    exit 1
+  fi
   Longitud=${#Cadena}
   Archivo=${Directorio}
   for i in `seq 1 ${Longitud}`; do 
@@ -15,8 +23,19 @@ function string2File {
 function generaCadena {
   Directorio=$1
   Alfabeto=$2
+  if [ -z "${1}" ] ; then
+    echo "Falta el parámetro 1 con el directorio donde se crean los archivos"
+    exit 1
+  fi
+  if [ -z "${2}" ] ; then
+    echo "Falta el parámetro 2 con la localización del fichero alfabeto"
+    exit 1
+  fi
+  if [ ! -d "${Directorio}" ] ; then
+    >&2 echo "No exite el directorio ${Directorio}, se crea"
+    mkdir -p -- ${Directorio}   
+  fi
   nLetras=`cat ${Alfabeto}| wc -l`
-  #echo Directorio ${Directorio} Alfabeto ${Alfabeto} nLetras ${nLetras}
   Ultimo="${Directorio}/.last"
   if [ ! -f ${Ultimo} ]; then
     echo -1 > ${Ultimo}
@@ -34,9 +53,3 @@ function generaCadena {
   done
   echo ${Cadena}
 }
-
-#Cadena=$(generaCadena "/opt/cortas/archivos" "/opt/cortas/alfabeto")
-#echo $Cadena
-#Resultado=$(string2File "/opt/cortas/archivos" ${Cadena})
-#echo Resultado "'${Resultado}'"
-
