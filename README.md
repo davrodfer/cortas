@@ -1,4 +1,4 @@
-# cortas
+# Cortas
 
 Monta un servicio de generación de url's cortas. Las url's se guardan en una estructura de directorios en la que los nombres de los archivos coinciden con la url que se pasa por parámetro, formando un directorio por letra. 
 
@@ -39,7 +39,7 @@ cp cortas.config.sample cortas.config
 ## Añadir url a la BBDD
 
 ```
-$ /opt/cortas/nuevaUrl.sh https://github.com/davrodfer/cortas
+$ /opt/cortas/nuevaUrl.sh -u https://github.com/davrodfer/cortas -c 86400 -r 302
 https://www.example.com/-9212
 $
 ```
