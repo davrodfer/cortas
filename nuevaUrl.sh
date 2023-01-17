@@ -1,15 +1,16 @@
-#!/bin/bash 
+#!/bin/bash
+set -euf -o pipefail
 . `dirname $0`/cortas.config
 . ${CODEDIR}/funciones.sh
 
 if [ -z "${1}" ] ; then
-  echo "Falta el parámetro con la url a reenviar"
+  err "Falta el parámetro con la url a reenviar"
   exit 1
 fi
 
 while : ; do
   CADENA=$(generaCadena "${BBDD}" "${ALFABETO}")
-  ARCHIVO=$(string2File "${BBDD}" ${CADENA})
+  ARCHIVO=$(string2File "${BBDD}" "${ALFABETO}" ${CADENA})
   [[ -f ${ARCHIVO} ]] || break
 done
 DIRECTORIO=`dirname $ARCHIVO`

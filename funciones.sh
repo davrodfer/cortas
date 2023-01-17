@@ -1,21 +1,30 @@
 #!/bin/bash
+function err {
+  echo "[$(date +'%Y-%m-%dT%H:%M:%S%z')]: $*" >&2
+}
 
 function string2File {
   Directorio=$1
-  Cadena=$2
+  Cadena=$3
+  Alfabeto=$2
   if [ -z "${1}" ] ; then
-    echo "Falta el parámetro 1 con el directorio donde se crean los archivos"
+    err "Falta el parámetro 1 con el directorio donde se crean los archivos"
     exit 1
   fi
   if [ -z "${2}" ] ; then
-    echo "Falta el parámetro 2 con la cadena a convertir en archivo"
+    err "Falta el parámetro 2 con la cadena a convertir en archivo"
     exit 1
   fi
   Longitud=${#Cadena}
   Archivo=${Directorio}
-  for i in `seq 1 ${Longitud}`; do 
+  for i in `seq 1 ${Longitud}` ; do 
     Caracter=`echo ${Cadena} | cut -c$i-$i`
-    Archivo=${Archivo}/${Caracter}
+    if grep -q ${Caracter} -- ${Alfabeto} ; then
+      Archivo=${Archivo}/${Caracter}
+    else
+      err "Caracter ${Caracter} no es valido"
+      exit 1
+    fi
   done
   echo ${Archivo}.data
 }
@@ -24,15 +33,15 @@ function generaCadena {
   Directorio=$1
   Alfabeto=$2
   if [ -z "${1}" ] ; then
-    echo "Falta el parámetro 1 con el directorio donde se crean los archivos"
+    err "Falta el parámetro 1 con el directorio donde se crean los archivos"
     exit 1
   fi
   if [ -z "${2}" ] ; then
-    echo "Falta el parámetro 2 con la localización del fichero alfabeto"
+    err "Falta el parámetro 2 con la localización del fichero alfabeto"
     exit 1
   fi
   if [ ! -d "${Directorio}" ] ; then
-    >&2 echo "No exite el directorio ${Directorio}, se crea"
+    err "No exite el directorio ${Directorio}, se crea"
     mkdir -p -- ${Directorio}   
   fi
   nLetras=`cat ${Alfabeto}| wc -l`
@@ -53,3 +62,5 @@ function generaCadena {
   done
   echo ${Cadena}
 }
+#Main
+set -euf -o pipefail
