@@ -71,7 +71,7 @@ fi
 while : ; do
   CADENA="$(generaCadena "${BBDD}" "${ALFABETO}")"
   ARCHIVO="$(string2File "${BBDD}" "${ALFABETO}" "${CADENA}")"
-  [[ -f "${ARCHIVO}" ]] || break
+  [[ -f "${ARCHIVO}" ]] && echo "El archivo generado ${ARCHIVO} ya existe" >&1 || break
 done
 DIRECTORIO="$(dirname "${ARCHIVO}")"
 if [ ! -d "${DIRECTORIO}" ] ; then
