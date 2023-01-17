@@ -29,6 +29,30 @@ function string2File {
   echo "${Archivo}.data"
 }
 
+function numero2cadena {
+  if [ -z "${1}" ] ; then
+    err "Falta el parámetro 1 con el numero origen"
+    exit 1
+  fi
+
+  if [ -z "${2}" ] ; then
+    err "Falta el parámetro 2 con la localización del fichero alfabeto"
+    exit 1
+  fi
+  Numero="${1}"
+  Alfabeto="$2"
+  nLetras=$(wc -l < "${Alfabeto}")
+  Cadena=""
+  while : ; do
+    Resto=$((Numero % nLetras))
+    Numero=$((Numero - Resto))
+    Numero=$((Numero / nLetras))
+    Cadena=$(head -$((Resto + 1)) "${Alfabeto}" | tail -1)$Cadena
+    [[ ${Numero} -ne 0 ]] || break
+  done
+  echo "${Cadena}"
+}
+
 function generaCadena {
   Directorio="$1"
   Alfabeto="$2"
@@ -44,7 +68,7 @@ function generaCadena {
     err "No exite el directorio '${Directorio}', se crea"
     mkdir -p -- "${Directorio}"   
   fi
-  nLetras=$(wc -l < "${Alfabeto}")
+  
   Ultimo="${Directorio}/.last"
   if [ ! -f "${Ultimo}" ]; then
     echo -1 > "${Ultimo}"
@@ -52,15 +76,8 @@ function generaCadena {
   UltimoNumero=$(cat -- "${Ultimo}")
   Numero=$((UltimoNumero + 1))
   echo "${Numero}" > "${Ultimo}"
-  Cadena=""
-  while : ; do
-    Resto=$((Numero % nLetras))
-    Numero=$((Numero - Resto))
-    Numero=$((Numero / nLetras))
-    Cadena=$(head -$((Resto + 1)) "${Alfabeto}" | tail -1)$Cadena
-    [[ ${Numero} -ne 0 ]] || break
-  done
-   echo "${Cadena}"
+  
+  echo "$(numero2cadena "${Numero}" "${Alfabeto}")"
 }
 #Main
 set -euf -o pipefail
