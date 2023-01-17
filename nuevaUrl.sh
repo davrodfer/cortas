@@ -6,14 +6,66 @@ source "$(dirname "${0}")/cortas.config"
 # shellcheck source=funciones.sh
 source "${CODEDIR}/funciones.sh"
 
-if [ -z "${1}" ] ; then
+function ayuda {
+  cat <<END; 
+  --------------------
+  Uso:
+  --------------------
+  ${0} -u URL [-c <NUM>] [-r <HTTPCODE>]
+
+  Genera una nueva redirección a la URL indicada con el parámetro -u con las
+  siguientes opciones:
+
+  -c <NUM> Añade una cabecera de cache con los segundos indicados.
+  -r <HTTPCODE> Devuelve el código HTTP, 301 o 302
+END
+}
+
+# Valores por defecto
+CODE=301
+CACHE=$((86400*30))
+URLREMOTA=""
+
+while getopts "u:c:r:" opt; do
+  case $opt in
+    u) URLREMOTA="$OPTARG";;
+    c) 
+      if ! [[ "${OPTARG}" =~ ^[0-9]+$ ]] ; then
+        err "error: ${OPTARG} no es un numero"
+        ayuda
+        exit 1
+      fi
+      CACHE="$OPTARG"
+    ;;
+    r)
+      if [ "${OPTARG}" -eq "301" ] || [ "${OPTARG}" -eq "302" ] ; then
+        CODE="$OPTARG"
+      else
+        err "${OPTARG} no es valido, tiene que ser 301 o 302"
+        ayuda
+        exit 1
+      fi
+    ;;
+    \?) 
+      err "Opcion invalida -$opt"
+      ayuda 
+      exit 1
+    ;;
+  esac
+
+  case $OPTARG in
+    -*) 
+      err "La opcion $opt necesita de un argumento válido"
+      ayuda 
+      exit 1
+    ;;
+  esac
+done
+
+if [ -z "${URLREMOTA}" ] ; then
   err "Falta el parámetro con la url a reenviar"
+  ayuda
   exit 1
-fi
-URLREMOTA="${1}"
-CODE="301"
-if [ -n "${2}" ] ; then
-  CODE="${2}"
 fi
 
 while : ; do
@@ -25,5 +77,9 @@ DIRECTORIO="$(dirname "${ARCHIVO}")"
 if [ ! -d "${DIRECTORIO}" ] ; then
   mkdir -p -- "${DIRECTORIO}"
 fi
-printf '{"url": "%s", "code":%s, "cache":2592005}' "${URLREMOTA}" "${CODE}" > "${ARCHIVO}"
+printf '{
+  "url": "%s", 
+  "code": %s, 
+  "cache": %s
+  }' "${URLREMOTA}" "${CODE}" "${CACHE}" > "${ARCHIVO}"
 echo "${URLBASE}${CADENA}"
