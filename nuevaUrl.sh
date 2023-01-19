@@ -52,14 +52,6 @@ while getopts "u:c:r:" opt; do
       exit 1
     ;;
   esac
-
-  case $OPTARG in
-    -*) 
-      err "La opcion $opt necesita de un argumento válido"
-      ayuda 
-      exit 1
-    ;;
-  esac
 done
 
 if [ -z "${URLREMOTA}" ] ; then
