@@ -22,8 +22,9 @@ sudo apt-get install nginx fcgiwrap
 Añadir configuracion a nginx
 
 ```
-  location ~ /- {
-     fastcgi_param SCRIPT_FILENAME  /opt/cortas/cortas.sh;
+  location ~ /-(.+)$ {
+     fastcgi_param SCRIPT_FILENAME /opt/cortas/cortas.sh;
+     fastcgi_param CORTASIDREDIRECT $1;
      include fastcgi_params;
      fastcgi_pass unix:/var/run/fcgiwrap.socket;
   }

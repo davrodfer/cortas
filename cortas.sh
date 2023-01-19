@@ -6,8 +6,8 @@ source "$(dirname "${0}")/cortas.config"
 # shellcheck source=funciones.sh
 source "${CODEDIR}/funciones.sh"
 
-CADENA=$(echo "${SCRIPT_NAME}" | tr -d '/-')
-URLFILE=$(string2File "${BBDD}" "${ALFABETO}" "${CADENA}")
+
+URLFILE=$(string2File "${BBDD}" "${ALFABETO}" "${CORTASIDREDIRECT}")
 
 if [ -f "${URLFILE}" ] ; then
   REMOTEURL="$(jq -r .url "${URLFILE}")"
@@ -20,7 +20,7 @@ if [ -f "${URLFILE}" ] ; then
     CACHE="2592006"
   fi
 
-  CODE="$(jq -r .code "${URLFILE}"   || echo 301)"
+  CODE="$(jq -r .code "${URLFILE}" || echo 301)"
   if [ "${CODE}" == "null" ] ; then
     CODE="302"
   fi
