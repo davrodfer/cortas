@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euf -o pipefail
 
-# shellcheck source=cortas.config
+# shellcheck source=./cortas.config
 source "$(dirname "${0}")/cortas.config"
-# shellcheck source=funciones.sh
+# shellcheck source=./funciones.sh
 source "${CODEDIR}/funciones.sh"
 
 

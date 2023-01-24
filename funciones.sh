@@ -75,4 +75,5 @@ function generaCadena {
 }
 #MainS
 set -euf -o pipefail
+# shellcheck source=./cortas.config
 source "$(dirname "${0}")/cortas.config"

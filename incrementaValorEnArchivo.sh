@@ -3,7 +3,9 @@
 # incrementa ese valor Con el valor del segundo parametro. Si es negativo, 
 # debería computarse bien.
 
+# shellcheck source=./cortas.config
 source "$(dirname "${0}")/cortas.config"
+# shellcheck source=./funciones.sh
 source "${CODEDIR}/funciones.sh"
 
 Archivo="${1}"
