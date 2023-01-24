@@ -9,7 +9,7 @@ source "${CODEDIR}/funciones.sh"
 Archivo="${1}"
 Valor="${2}"
 
-re='^[0-9]+$'
+re='^[+-]?[0-9]+$'
 
 if [ ! -f "${Archivo}" ]; then
   err "El archivo '${Archivo}' no existe"
