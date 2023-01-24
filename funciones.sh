@@ -70,14 +70,9 @@ function generaCadena {
   fi
   
   Ultimo="${Directorio}/.last"
-  if [ ! -f "${Ultimo}" ]; then
-    echo -1 > "${Ultimo}"
-  fi
-  UltimoNumero=$(cat -- "${Ultimo}")
-  Numero=$((UltimoNumero + 1))
-  echo "${Numero}" > "${Ultimo}"
-  
-  echo "$(numero2cadena "${Numero}" "${Alfabeto}")"
+  Numero="$(/usr/bin/flock --exclusive --timeout 20 "${Ultimo}" "${CODEDIR}"/incrementaValorEnArchivo.sh "${Ultimo}" 1)"
+  numero2cadena "${Numero}" "${Alfabeto}"
 }
-#Main
+#MainS
 set -euf -o pipefail
+source "$(dirname "${0}")/cortas.config"
